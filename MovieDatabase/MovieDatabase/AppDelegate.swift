@@ -8,14 +8,18 @@
 
 import UIKit
 import CoreData
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    var remoteConfig: RemoteConfig?
+    var movieDatabaseAPIKey = ""
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        FirebaseApp.configure()
+        remoteConfig = RemoteConfig.remoteConfig()
+        fetchConfig()
         return true
     }
 
@@ -31,6 +35,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the user discards a scene session.
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+    }
+
+    // MARK: - Remote Config
+
+    func fetchConfig() {
+        let expirationDuration: TimeInterval = 3600
+        remoteConfig?.fetch(withExpirationDuration: expirationDuration) { [weak self] (status, error) in
+            guard let strongSelf = self else { return }
+            if status == .success {
+                strongSelf.remoteConfig?.activate { error in
+                    if let movieDatabaseAPIKey = strongSelf.remoteConfig?["movieDatabaseAPIKey"].stringValue {
+                      strongSelf.movieDatabaseAPIKey = movieDatabaseAPIKey
+                    }
+                }
+            } else {
+                print("🧩 Remote Config not fetched!!")
+                if let error = error {
+                    print("Error \(error.localizedDescription)")
+                }
+            }
+        }
     }
 
     // MARK: - Core Data stack
