@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         remoteConfig = RemoteConfig.remoteConfig()
-        fetchConfig()
+        self.fetchRemoteConfig()
         return true
     }
 
@@ -39,14 +39,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Remote Config
 
-    func fetchConfig() {
+    func fetchRemoteConfig() {
         let expirationDuration: TimeInterval = 3600
         remoteConfig?.fetch(withExpirationDuration: expirationDuration) { [weak self] (status, error) in
-            guard let strongSelf = self else { return }
+            guard let strongSelf = self else {
+                return
+            }
             if status == .success {
                 strongSelf.remoteConfig?.activate { error in
                     if let movieDatabaseAPIKey = strongSelf.remoteConfig?["movieDatabaseAPIKey"].stringValue {
-                      strongSelf.movieDatabaseAPIKey = movieDatabaseAPIKey
+                        strongSelf.movieDatabaseAPIKey = movieDatabaseAPIKey
+                        DispatchQueue.main.async {
+                            MDBConnection.shared.setupMovieDB()
+                        }
                     }
                 }
             } else {
