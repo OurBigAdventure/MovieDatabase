@@ -13,10 +13,6 @@ class MovieTableCell: UITableViewCell {
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var yearLabel: UILabel!
-    @IBOutlet weak var spacerOne: UILabel!
-    @IBOutlet weak var durationLabel: UILabel!
-    @IBOutlet weak var spacerTwo: UILabel!
-    @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var starImageView: UIImageView!
     @IBOutlet weak var userRatingLabel: UILabel!
     @IBOutlet weak var playImageView: UIImageView!
@@ -25,7 +21,7 @@ class MovieTableCell: UITableViewCell {
         super.awakeFromNib()
         starImageView.image = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
         starImageView.tintColor = .yellow
-        playImageView.image = UIImage(systemName: "playButton")?.withRenderingMode(.alwaysTemplate)
+        playImageView.image = UIImage(named: "playButton")?.withRenderingMode(.alwaysTemplate)
         playImageView.tintColor = .lightGray
     }
 
@@ -37,8 +33,6 @@ class MovieTableCell: UITableViewCell {
         posterImageView.image = nil
         titleLabel.text = ""
         yearLabel.text = ""
-        durationLabel.text = ""
-        ratingLabel.text = ""
         userRatingLabel.text = ""
     }
 

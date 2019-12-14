@@ -95,4 +95,18 @@ class MDBConnection {
         }
     }
 
+    func cacheImages(for movies: [Movie]) {
+        if let imageSettings = self.config["images"] as? [String:Any],
+            let baseURL = imageSettings["secure_base_url"] as? String,
+            let posterSizes = imageSettings["poster_sizes"] as? [String] {
+            let imageBaseURL = baseURL
+            let posterImageSize = posterSizes[2]
+            for movie in movies {
+                if let posterPath = movie.posterPath {
+                    ImageCache.shared.cacheImage(imageBaseURL + posterImageSize + posterPath, callback: nil)
+                }
+            }
+        }
+    }
+
 }
