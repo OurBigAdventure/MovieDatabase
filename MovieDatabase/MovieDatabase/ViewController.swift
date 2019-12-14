@@ -24,6 +24,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         ImageCache.shared.delegate = self
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? DetailVC,
+            let selectedIndex = tableView.indexPathForSelectedRow {
+            destination.movie = MDBConnection.shared.movies[selectedIndex.item]
+            destination.imageBaseURL = imageBaseURL
+            destination.posterImageSize = posterImageSize
+        }
+    }
+
+    // MARK: - UITableView
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }

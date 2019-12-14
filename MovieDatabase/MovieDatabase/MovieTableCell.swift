@@ -21,7 +21,7 @@ class MovieTableCell: UITableViewCell {
         super.awakeFromNib()
         starImageView.image = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
         starImageView.tintColor = .yellow
-        playImageView.image = UIImage(named: "playButton")?.withRenderingMode(.alwaysTemplate)
+        playImageView.image = UIImage(systemName: "play")?.withRenderingMode(.alwaysTemplate)
         playImageView.tintColor = .lightGray
     }
 
