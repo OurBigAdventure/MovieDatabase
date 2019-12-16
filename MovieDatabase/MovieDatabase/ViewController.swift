@@ -53,7 +53,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if let voteAverage = currentMovie.voteAverage {
             cell?.userRatingLabel.text = String(format:"%.1f", voteAverage)
         }
-
+        if let genres = currentMovie.genreIds {
+            for genre in genres {
+                if let newGenre = MDBConnection.shared.genres[genre],
+                    let genreList = cell?.genreLabel.text {
+                    var spacer = ", "
+                    if genreList.isEmpty {
+                        spacer = ""
+                    }
+                    cell?.genreLabel.text = genreList + spacer + newGenre
+                }
+            }
+        }
         if let posterPath = currentMovie.posterPath {
             let url = imageBaseURL + posterImageSize + posterPath
             if let image = ImageCache.shared.fetchImage(url) {

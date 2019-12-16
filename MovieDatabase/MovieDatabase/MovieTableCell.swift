@@ -16,7 +16,8 @@ class MovieTableCell: UITableViewCell {
     @IBOutlet weak var starImageView: UIImageView!
     @IBOutlet weak var userRatingLabel: UILabel!
     @IBOutlet weak var playImageView: UIImageView!
-
+    @IBOutlet weak var genreLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         starImageView.image = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
@@ -34,6 +35,7 @@ class MovieTableCell: UITableViewCell {
         titleLabel.text = ""
         yearLabel.text = ""
         userRatingLabel.text = ""
+        genreLabel.text = ""
     }
 
 }
