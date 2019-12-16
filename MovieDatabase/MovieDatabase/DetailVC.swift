@@ -25,19 +25,37 @@ class DetailVC: UIViewController {
     @IBOutlet weak var starIcon: UIImageView!
     @IBOutlet weak var genreList: UITextView!
     @IBOutlet weak var homepageButton: UIButton!
+    @IBOutlet weak var spacerView: UIView!
+    @IBOutlet weak var stackView: UIStackView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         starIcon.image = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
         starIcon.tintColor = .yellow
         durationLabel.text = ""
-        homepageButton.contentEdgeInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
+        homepageButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 24, bottom: 8, right: 24)
         homepageButton.layer.cornerRadius = 8.0
         homepageButton.layer.borderColor = UIColor.white.cgColor
         homepageButton.layer.borderWidth = 2.0
         homepageButton.isHidden = true
         homepageButton.alpha = 0.0
+
+        NotificationCenter.default.addObserver(self, selector: #selector(DetailVC.viewDidRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+//        super.viewWillTransition(to: size, with: coordinator)
+//        if UIDevice.current.orientation.isLandscape {
+//            spacerView.isHidden = true
+//        } else {
+//            spacerView.isHidden = false
+//        }
+//    }
 
     override func viewWillAppear(_ animated: Bool) {
         guard let movie = movie else {
@@ -111,5 +129,14 @@ class DetailVC: UIViewController {
     @objc func openHomepage() {
         guard let url = URL(string: self.homepage) else { return }
         UIApplication.shared.open(url)
+    }
+
+    @objc func viewDidRotate() {
+        if UIDevice.current.orientation.isLandscape {
+            spacerView.isHidden = true
+        } else {
+            spacerView.isHidden = false
+            stackView.setNeedsLayout()
+        }
     }
 }
